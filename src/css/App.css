@@ -1,0 +1,45 @@
+.add-film .card-body {
+  display: none;
+}
+
+.film-addheading {
+  cursor: pointer;
+  user-select: none;
+}
+
+.film-list {
+  font-size: 1.1em;
+}
+
+.film-list .pet-item {
+  border-bottom: 1px dotted gray;
+}
+
+.film-list .pet-item:last-child {
+  border-bottom: none;
+}
+
+.film-list .pet-name {
+  font-weight: 600;
+  color: #337ab7;
+  font-size: 1.3em;
+  line-height: 100%;
+}
+
+.film-list .label-item {
+  font-weight: 600;
+  color: #667b82;
+}
+
+.film-list .film-date {
+  font-style: italic;
+}
+
+.film-list .film-notes {
+  line-height: 120%;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: #a9aeb2;
+}
