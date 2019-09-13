@@ -20,6 +20,9 @@ class FilmDetails extends Component {
   }
 
   componentDidMount() {
+    // Return if no film exists
+    if(this.props.match.params.id >= this.props.films.length) return
+
     let film = this.props.films[parseInt(this.props.match.params.id)];
     var index;
 
@@ -103,6 +106,11 @@ class FilmDetails extends Component {
     let film = this.props.films[parseInt(this.props.match.params.id)];
     return (
       <div>
+        { this.props.match.params.id >= this.props.films.length && (
+          <div className="not-found">
+            <p>No film with the id {this.props.match.params.id}.</p>
+          </div>
+        )}
         { film && (
           <div className="film-list item-list mb-3">
             <div className="film-item col media py-3" key={film.filmId}>
