@@ -18,6 +18,8 @@ class App extends Component {
       queryText: '',
       lastIndex: 0
     }
+
+    // Binding methods
     this.changeOrder = this.changeOrder.bind(this);
     this.searchFilms = this.searchFilms.bind(this);
   }
@@ -26,6 +28,7 @@ class App extends Component {
     fetch('https://swapi.co/api/films/')
       .then(response => response.json())
       .then(response => {
+        // Map a unique id to each film
         const swFilms = response.results.map(item => {
           item.filmId = this.state.lastIndex;
           this.setState({lastIndex: this.state.lastIndex+1})
@@ -54,6 +57,7 @@ class App extends Component {
 
   render() {
 
+    // Determine order of sorting
     let order;
     let filteredFilms = this.state.films;
     if(this.state.orderDir === 'asc') {
@@ -62,6 +66,7 @@ class App extends Component {
       order = -1;
     }
 
+    // Filter (by queryText) and sort films before displaying
     filteredFilms = filteredFilms.sort((a,b) => {
       if (a[this.state.orderBy].toLowerCase() < b[this.state.orderBy].toLowerCase()) {
         return -1 * order;
@@ -71,9 +76,6 @@ class App extends Component {
     }).filter(eachItem => {
       return(
         eachItem['title']
-          .toLowerCase()
-          .includes(this.state.queryText.toLowerCase()) ||
-        eachItem['release_date']
           .toLowerCase()
           .includes(this.state.queryText.toLowerCase()) ||
         eachItem['opening_crawl']

@@ -23,6 +23,7 @@ class FilmDetails extends Component {
     let film = this.props.films[parseInt(this.props.match.params.id)];
     var index;
 
+    // Fetch Characters
     for (index in film.characters) {
       fetch(film.characters[index])
         .then(response => response.json())
@@ -37,6 +38,7 @@ class FilmDetails extends Component {
         });
     }
 
+    // Fetch Planets
     for (index in film.planets) {
       fetch(film.planets[index])
         .then(response => response.json())
@@ -51,6 +53,7 @@ class FilmDetails extends Component {
         });
     }
 
+    // Fetch Starships
     for (index in film.starships) {
       fetch(film.starships[index])
         .then(response => response.json())
@@ -65,6 +68,7 @@ class FilmDetails extends Component {
         });
     }
 
+    // Fetch Vehicles
     for (index in film.vehicles) {
       fetch(film.vehicles[index])
         .then(response => response.json())
@@ -79,6 +83,7 @@ class FilmDetails extends Component {
         });
     }
 
+    // Fetch Species
     for (index in film.species) {
       fetch(film.species[index])
         .then(response => response.json())
@@ -89,7 +94,7 @@ class FilmDetails extends Component {
             species: this.state.species.concat(response)
           });
         }).catch(error => {
-          console.log('specie Request Failed: ', error);
+          console.log('Species Request Failed: ', error);
         });
     }
   }
