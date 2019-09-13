@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route} from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import '../css/App.css';
 
 import ListFilms from './ListFilms';
+import SearchFilms from './SearchFilms';
 import FilmDetails from './FilmDetails';
 
 class App extends Component {
@@ -12,10 +13,13 @@ class App extends Component {
 
     this.state = {
       films: [],
-      orderBy: 'filmName',
+      orderBy: 'release_date',
       orderDir: 'asc',
+      queryText: '',
       lastIndex: 0
     }
+    this.changeOrder = this.changeOrder.bind(this);
+    this.searchFilms = this.searchFilms.bind(this);
   }
 
   componentDidMount() {
@@ -31,27 +35,84 @@ class App extends Component {
           films: swFilms
         });
       }).catch(error => {
-        console.log('Request Failed: ', error);
+        console.log('Film Request Failed: ', error);
       });
   }
 
+  searchFilms(query) {
+    this.setState({
+      queryText: query
+    });
+  }
+
+  changeOrder(order, dir) {
+    this.setState({
+      orderBy: order,
+      orderDir: dir
+    });
+  }
+
   render() {
+
+    let order;
+    let filteredFilms = this.state.films;
+    if(this.state.orderDir === 'asc') {
+      order = 1;
+    } else {
+      order = -1;
+    }
+
+    filteredFilms = filteredFilms.sort((a,b) => {
+      if (a[this.state.orderBy].toLowerCase() < b[this.state.orderBy].toLowerCase()) {
+        return -1 * order;
+      } else {
+        return 1 * order;
+      }
+    }).filter(eachItem => {
+      return(
+        eachItem['title']
+          .toLowerCase()
+          .includes(this.state.queryText.toLowerCase()) ||
+        eachItem['release_date']
+          .toLowerCase()
+          .includes(this.state.queryText.toLowerCase()) ||
+        eachItem['opening_crawl']
+          .toLowerCase()
+          .includes(this.state.queryText.toLowerCase())
+      );
+    });
+
     return (
       <Router>
-        <main className="page bg-white">
-          <div className="container">
-            <div className="row">
-              <div className="col-12 bg-white">
-                <Route path="/" exact render={routeProps => (
-                  <ListFilms {...routeProps} films={this.state.films} />
-                )} />
-                <Route path="/:id" render={routeProps => (
-                  <FilmDetails {...routeProps} films={this.state.films} />
-                )} />
+        <Link to="/">
+          <header className="container text-white">
+            <h4 className="py-2 text-center">Star Wars</h4>
+          </header>
+        </Link>
+        { this.state.films.length > 0 && (
+          <main className="page bg-white">
+            <div className="container">
+              <div className="row">
+                <div className="col-12 bg-white">
+                  <Route path="/" exact render={routeProps => (
+                    <div>
+                      <SearchFilms
+                        orderBy={this.state.orderBy}
+                        orderDir={this.state.orderDir}
+                        changeOrder={this.changeOrder}
+                        searchFilms={this.searchFilms}
+                      />
+                      <ListFilms {...routeProps} films={filteredFilms} />
+                    </div>
+                  )} />
+                  <Route path="/:id" render={routeProps => (
+                    <FilmDetails {...routeProps} films={this.state.films} />
+                  )} />
+                </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
+        )}
       </Router>
     );
   }

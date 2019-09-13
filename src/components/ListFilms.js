@@ -12,7 +12,7 @@ class ListFilms extends Component {
             <div className="film-item col media py-3">
               <div className="film-info media-body">
                 <div className="film-head d-flex">
-                  <h4>Episode {item.episode_id}: {item.title}</h4>
+                  <h4>{item.title}</h4>
                   <span className="film-date ml-auto">
                     <Moment
                       date={item.release_date}
